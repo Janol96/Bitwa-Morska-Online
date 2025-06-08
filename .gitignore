@@ -1,0 +1,12 @@
+/build
+*.exe
+*.obj
+*.o
+*.dll
+*.so
+*.a
+*.log
+.DS_Store
+.vscode/
+*.user
+*.user.*

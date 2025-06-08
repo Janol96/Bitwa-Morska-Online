@@ -4,6 +4,7 @@
 #include <iostream>
 #include <filesystem>
 #include <cmath>
+#include "SinglePlayerScreen.h"
 
 const int WINDOW_WIDTH = 1000;
 const int WINDOW_HEIGHT = 500;
@@ -104,9 +105,18 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
-            } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && hoveredIndex != -1) {
-                if (hoveredIndex == 3) window.close();
+            } else if (event.type == sf::Event::MouseButtonPressed &&
+                       event.mouseButton.button == sf::Mouse::Left && hoveredIndex != -1) {
+
+                if (hoveredIndex == 0) {
+                    // TRYB JEDNOOSOBOWY
+                    SinglePlayerScreen singlePlayer(font);
+                    singlePlayer.run(window);
+                } else if (hoveredIndex == 3) {
+                    window.close();
+                }
             }
+
         }
     }
 
