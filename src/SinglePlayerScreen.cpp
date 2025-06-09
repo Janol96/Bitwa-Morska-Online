@@ -1,4 +1,5 @@
 #include "SinglePlayerScreen.h"
+#include "Game.h"
 #include <memory>
 
 // Lokalna implementacja testowego statku
@@ -48,9 +49,13 @@ void SinglePlayerScreen::run(sf::RenderWindow& window) {
                     if (player.getBoard().addShip(newShip)) {
                         currentShipLength--;
                         if (currentShipLength < 1) {
+                            // Uruchamiamy rozgrywkę jednoosobową
+                            Game game(player);
+                            game.run(window);
                             running = false;
                         }
                     }
+
                 }
             }
         }
@@ -63,7 +68,7 @@ void SinglePlayerScreen::run(sf::RenderWindow& window) {
 
         // Renderowanie
         window.clear(sf::Color::Black);
-        player.getBoard().draw(window, tileSize, offset);
+        player.getBoard().draw(window, tileSize, offset, true); // true – pokazuj statki gracza
 
         // Rysowanie ghost-mode
         if (ghostPosition.has_value()) {

@@ -8,17 +8,18 @@ class Board {
 private:
     int size;
     std::vector<std::shared_ptr<Ship>> ships;
-    std::vector<std::vector<bool>> hits; // śledzenie trafień
+
+    std::vector<sf::Vector2i> missedShots;
+    std::vector<sf::Vector2i> hitMarkers;
 
 public:
-    Board(int size = 10);
+    Board(int size);
 
     bool addShip(std::shared_ptr<Ship> ship);
-    bool isCellOccupied(sf::Vector2i cell) const;
-    bool isCellHit(sf::Vector2i cell) const;
-
-    bool shoot(sf::Vector2i cell); // true jeśli trafiono
+    bool isCellOccupied(const sf::Vector2i& cell) const;
+    bool isCellHit(const sf::Vector2i& cell) const;
     bool allShipsSunk() const;
+    bool attack(const sf::Vector2i& pos);
 
-    void draw(sf::RenderWindow& window, float tileSize, sf::Vector2f offset) const;
+    void draw(sf::RenderWindow& window, float tileSize, sf::Vector2f offset, bool revealShips) const;
 };

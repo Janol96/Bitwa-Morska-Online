@@ -13,6 +13,7 @@ CONFIG(debug, debug|release){
 
 SOURCES += \
         main.cpp \
+        src/AIPlayer.cpp \
         src/Board.cpp \
         src/Game.cpp \
         src/Player.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
         src/SinglePlayerScreen.cpp
 
 HEADERS += \
+    include/AIPlayer.h \
     include/Board.h \
     include/Game.h \
     include/Player.h \
