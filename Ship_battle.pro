@@ -14,10 +14,14 @@ CONFIG(debug, debug|release){
 SOURCES += \
         main.cpp \
         src/Board.cpp \
+        src/Game.cpp \
+        src/Player.cpp \
         src/Ship.cpp \
         src/SinglePlayerScreen.cpp
 
 HEADERS += \
     include/Board.h \
+    include/Game.h \
+    include/Player.h \
     include/Ship.h \
     include/SinglePlayerScreen.h

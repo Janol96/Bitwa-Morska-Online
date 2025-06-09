@@ -1,5 +1,3 @@
-// Bitwa Morska Online - Tylko menu główne
-
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <filesystem>
@@ -8,10 +6,10 @@
 
 const int WINDOW_WIDTH = 1000;
 const int WINDOW_HEIGHT = 500;
-
 const std::string MENU_TEXTURE_PATH = "menu_bg_clear.png";
 
-void drawMenu(sf::RenderWindow& window, sf::Font& font, sf::Texture* bgTexture, std::vector<sf::Text>& options, int hovered, sf::Text& titleText) {
+void drawMenu(sf::RenderWindow& window, sf::Font& font, sf::Texture* bgTexture,
+              std::vector<sf::Text>& options, int hovered, sf::Text& titleText) {
     window.clear();
 
     if (bgTexture) {
@@ -49,6 +47,7 @@ void drawFontError(sf::RenderWindow& window) {
 int main() {
     std::cout << "Current working dir: " << std::filesystem::current_path() << std::endl;
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bitwa Morska Online");
+
     sf::Font font;
     if (!font.loadFromFile("Roboto-Regular.ttf")) {
         std::cerr << "Blad: nie mozna zaladowac czcionki Roboto-Regular.ttf" << std::endl;
@@ -116,7 +115,6 @@ int main() {
                     window.close();
                 }
             }
-
         }
     }
 

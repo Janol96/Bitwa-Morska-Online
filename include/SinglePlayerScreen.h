@@ -1,12 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Board.h"
-#include "Ship.h"
+#include <optional>
+#include "Player.h"
 
 class SinglePlayerScreen {
 private:
-    Board board;
     sf::Font& font;
+    Player player;
+
+    int currentShipLength;
+    bool currentOrientation;
+
+    std::optional<sf::Vector2i> ghostPosition; // aktualna pozycja kursora
 
 public:
     SinglePlayerScreen(sf::Font& font);
