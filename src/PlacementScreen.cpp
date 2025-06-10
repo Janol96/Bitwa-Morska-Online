@@ -1,12 +1,10 @@
-#include "SinglePlayerScreen.h"
+#include "PlacementScreen.h"
 #include "BasicShip.h"
-#include "Game.h"
-#include <memory>
 
-SinglePlayerScreen::SinglePlayerScreen(sf::Font& font)
-    : font(font), player("Gracz"), currentShipLength(4), currentOrientation(true) {}
+PlacementScreen::PlacementScreen(sf::Font& font, Player& player)
+    : font(font), player(player), currentShipLength(4), currentOrientation(true) {}
 
-void SinglePlayerScreen::run(sf::RenderWindow& window) {
+void PlacementScreen::run(sf::RenderWindow& window) {
     float tileSize = 40.0f;
     sf::Vector2f offset(50, 50);
     bool running = true;
@@ -18,7 +16,7 @@ void SinglePlayerScreen::run(sf::RenderWindow& window) {
                 window.close();
 
             if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Escape)
+                if (event.key.code == sf::Keyboard::Escape && currentShipLength < 1)
                     running = false;
                 else if (event.key.code == sf::Keyboard::R)
                     currentOrientation = !currentOrientation;
@@ -31,35 +29,26 @@ void SinglePlayerScreen::run(sf::RenderWindow& window) {
                     auto newShip = std::make_shared<BasicShip>(currentShipLength, *ghostPosition, currentOrientation);
                     if (player.getBoard().addShip(newShip)) {
                         currentShipLength--;
-                        if (currentShipLength < 1) {
-                            // Uruchamiamy rozgrywkę jednoosobową
-                            Game game(player);
-                            game.run(window);
-                            running = false;
-                        }
                     }
                 }
             }
         }
 
-        // Aktualizacja ghosta (pozycja kursora)
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         int x = (mousePos.x - static_cast<int>(offset.x)) / static_cast<int>(tileSize);
         int y = (mousePos.y - static_cast<int>(offset.y)) / static_cast<int>(tileSize);
         ghostPosition = sf::Vector2i(x, y);
 
-        // Renderowanie
         window.clear(sf::Color::Black);
-        player.getBoard().draw(window, tileSize, offset, true); // true – pokazuj statki gracza
+        player.getBoard().draw(window, tileSize, offset, true);
 
-        // Rysowanie ghost-mode
         if (ghostPosition.has_value()) {
             for (int i = 0; i < currentShipLength; ++i) {
                 int gx = ghostPosition->x + (currentOrientation ? i : 0);
                 int gy = ghostPosition->y + (currentOrientation ? 0 : i);
 
                 sf::RectangleShape ghost(sf::Vector2f(tileSize - 2, tileSize - 2));
-                ghost.setFillColor(sf::Color(150, 150, 150, 100)); // półprzezroczysty szary
+                ghost.setFillColor(sf::Color(150, 150, 150, 100));
                 ghost.setPosition(offset.x + gx * tileSize, offset.y + gy * tileSize);
                 window.draw(ghost);
             }

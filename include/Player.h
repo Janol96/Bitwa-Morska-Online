@@ -1,26 +1,21 @@
 #pragma once
-#include <memory>
-#include <vector>
 #include <SFML/Graphics.hpp>
 #include "Board.h"
-#include "Ship.h"
+#include <string>
 
 class Player {
-protected:
-    Board board;
+private:
     std::string name;
+    Board board;
+    sf::Font& font;
 
 public:
     Player(const std::string& name);
-
-    virtual ~Player() = default;
+    Player(Board& board, sf::Font& font);
 
     Board& getBoard();
     const Board& getBoard() const;
 
-    const std::string& getName() const;
-
-    virtual void placeShips(); // tymczasowa metoda rozmieszczania
-    virtual sf::Vector2i chooseTarget(); // wybór celu (np. przez AI)
-    virtual void notifyShotResult(bool hit); // AI może się uczyć
+    void addShip(std::shared_ptr<Ship> ship);
+    std::vector<std::shared_ptr<Ship>> getShips() const;
 };

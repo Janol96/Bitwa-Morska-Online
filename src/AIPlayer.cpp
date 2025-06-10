@@ -1,26 +1,8 @@
 #include "AIPlayer.h"
-#include "Ship.h"
+#include "BasicShip.h"
 #include <cstdlib>
 #include <ctime>
 #include <memory>
-
-// lokalna klasa tymczasowa (brak plików .h/.cpp)
-class BasicShip : public Ship {
-public:
-    BasicShip(int length, sf::Vector2i pos, bool horizontal)
-        : Ship(length, pos, horizontal) {}
-
-    void draw(sf::RenderWindow& window, float tileSize, sf::Vector2f offset) const override {
-        for (int i = 0; i < length; ++i) {
-            int x = position.x + (horizontal ? i : 0);
-            int y = position.y + (horizontal ? 0 : i);
-            sf::RectangleShape shape(sf::Vector2f(tileSize - 2, tileSize - 2));
-            shape.setFillColor(sf::Color::Red);
-            shape.setPosition(offset.x + x * tileSize, offset.y + y * tileSize);
-            window.draw(shape);
-        }
-    }
-};
 
 AIPlayer::AIPlayer(const std::string& name)
     : Player(name)

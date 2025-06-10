@@ -3,6 +3,11 @@
 #include <filesystem>
 #include <cmath>
 #include "SinglePlayerScreen.h"
+#include "GameLAN.h"
+#include "Player.h"
+#include "Board.h"
+#include "BasicShip.h"
+#include "NetworkManager.h"
 
 const int WINDOW_WIDTH = 1000;
 const int WINDOW_HEIGHT = 500;
@@ -111,6 +116,47 @@ int main() {
                     // TRYB JEDNOOSOBOWY
                     SinglePlayerScreen singlePlayer(font);
                     singlePlayer.run(window);
+
+                } else if (hoveredIndex == 1) {
+                    // GRA ONLINE
+                    sf::Text question("Czy chcesz byc HOSTEM? (Y/N)", font, 24);
+                    question.setPosition(250, 450);
+                    question.setFillColor(sf::Color::White);
+
+                    window.draw(question);
+                    window.display();
+
+                    bool decided = false;
+                    bool isServer = false;
+                    while (!decided && window.isOpen()) {
+                        sf::Event keyEvent;
+                        while (window.pollEvent(keyEvent)) {
+                            if (keyEvent.type == sf::Event::KeyPressed) {
+                                if (keyEvent.key.code == sf::Keyboard::Y) {
+                                    isServer = true;
+                                    decided = true;
+                                } else if (keyEvent.key.code == sf::Keyboard::N) {
+                                    isServer = false;
+                                    decided = true;
+                                }
+                            }
+                        }
+                    }
+
+                    NetworkManager network;
+                    if (isServer) {
+                        if (!network.startServer(54000)) continue;
+                    } else {
+                        if (!network.startClient("192.168.1.46", 54000)) continue; //tu wkleic IP HOSTA
+                    }
+
+                    Board emptyBoard1(10), emptyBoard2(10);
+                    Player localPlayer(emptyBoard1, font);
+                    Player remotePlayer(emptyBoard2, font);
+
+                    GameLAN game(localPlayer, remotePlayer, network, isServer, font);
+                    game.run(window);
+
                 } else if (hoveredIndex == 3) {
                     window.close();
                 }
