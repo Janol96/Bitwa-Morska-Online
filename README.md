@@ -44,11 +44,11 @@ Skopiuj zawartość folderu assets/ do katalogu build/[nazwa]
 ---
 
 ## 🧠 Struktura projektu
-main.cpp – menu główne, uruchamianie gry
-Game.* – zarządzanie turami, zakończeniem, graczem i AI
-NetworkManager.* – połączenie klient-serwer w LAN (do dopracowania)
-Board, Player, Ship – klasy reprezentujące logikę planszy
-assets/ – folder z grafikami i czcionkami (.png) wymagany do uruchomienia
+- main.cpp – menu główne, uruchamianie gry
+- Game.* – zarządzanie turami, zakończeniem, graczem i AI
+- NetworkManager.* – połączenie klient-serwer w LAN (do dopracowania)
+- Board, Player, Ship – klasy reprezentujące logikę planszy
+- assets/ – folder z grafikami i czcionkami (.png) wymagany do uruchomienia
 
 ---
 
