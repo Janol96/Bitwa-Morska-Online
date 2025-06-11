@@ -66,7 +66,12 @@ void Board::draw(sf::RenderWindow& window, float tileSize, sf::Vector2f offset, 
         for (int y = 0; y < size; ++y) {
             sf::RectangleShape cell(sf::Vector2f(tileSize - 2, tileSize - 2));
             cell.setPosition(offset.x + x * tileSize, offset.y + y * tileSize);
-            cell.setFillColor(sf::Color(173, 216, 230));
+
+            // przezroczysto-szary + czarna ramka
+            cell.setFillColor(sf::Color(128, 128, 128, 100)); // R, G, B, alpha
+            cell.setOutlineThickness(1);
+            cell.setOutlineColor(sf::Color::Black);
+
             window.draw(cell);
         }
     }
@@ -111,7 +116,7 @@ std::string Board::serializeShips() const {
 }
 
 void Board::loadShipsFromString(const std::string& data) {
-    ships.clear();  // lub reset()
+    ships.clear();
 
     std::istringstream iss(data);
     std::string token;

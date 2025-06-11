@@ -3,6 +3,7 @@
 #include "PlacementScreen.h"
 #include <thread>
 #include <chrono>
+#include <iostream>
 
 GameLAN::GameLAN(Player& player, Player& enemy, NetworkManager& network, bool isServer, sf::Font& font)
     : player(player), enemy(enemy), network(network), isServer(isServer), font(font) {
@@ -11,7 +12,7 @@ GameLAN::GameLAN(Player& player, Player& enemy, NetworkManager& network, bool is
 
 void GameLAN::run(sf::RenderWindow& window) {
     this->window = &window;
-    startPlacementPhase();
+    startPlacementPhase();  // <-- faza rozmieszczania
 
     float tileSize = 40.f;
     sf::Vector2f offsetPlayer(50, 50);
@@ -49,6 +50,7 @@ void GameLAN::run(sf::RenderWindow& window) {
                 return;
         }
 
+        // odbiór strzału
         if (!gameOver && !myTurn) {
             sf::Vector2i enemyShot;
             if (network.receiveShot(enemyShot)) {
@@ -58,10 +60,21 @@ void GameLAN::run(sf::RenderWindow& window) {
             }
         }
 
-        if (!gameOver && (player.getBoard().allShipsSunk() || enemy.getBoard().allShipsSunk())) {
+        handleIncomingMessagesDuringGame();  // odbiór komunikatów
+
+        // rozstrzygnięcie gry lokalnie tylko po stronie serwera
+        if (!gameOver && player.getBoard().allShipsSunk()) {
             gameOver = true;
-            iWon = enemy.getBoard().allShipsSunk();
-            endText.setString(iWon ? "WYGRANA" : "PRZEGRANA");
+            iWon = false;
+            network.sendMessage("GAME_OVER:HOST_WINS");
+            endText.setString("PRZEGRANA");
+        }
+
+        if (!gameOver && isServer && enemy.getBoard().allShipsSunk()) {
+            gameOver = true;
+            iWon = true;
+            network.sendMessage("GAME_OVER:CLIENT_LOSES");
+            endText.setString("WYGRANA");
         }
 
         window.clear(sf::Color::Black);
@@ -74,6 +87,7 @@ void GameLAN::run(sf::RenderWindow& window) {
         window.display();
     }
 }
+
 void GameLAN::startPlacementPhase() {
     PlacementScreen placement(font, player);
     placement.run(*window);
@@ -97,7 +111,23 @@ void GameLAN::handleIncomingMessagesDuringPlacement() {
             opponentPlacementDone = true;
         } else if (message.rfind("SHIPS:", 0) == 0) {
             std::string data = message.substr(6);
+            std::cout << "Otrzymano statki: " << data << std::endl;
             enemy.getBoard().loadShipsFromString(data);
+        }
+    }
+}
+
+void GameLAN::handleIncomingMessagesDuringGame() {
+    std::string message;
+    if (network.receiveMessage(message)) {
+        if (message == "GAME_OVER:HOST_WINS") {
+            gameOver = true;
+            iWon = false;
+            std::cout << "Otrzymano info o przegranej" << std::endl;
+        } else if (message == "GAME_OVER:CLIENT_LOSES") {
+            gameOver = true;
+            iWon = true;
+            std::cout << "Otrzymano info o wygranej" << std::endl;
         }
     }
 }
