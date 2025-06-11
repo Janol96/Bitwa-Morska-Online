@@ -24,6 +24,7 @@ SOURCES += \
         src/Ship.cpp \
         src/SinglePlayerScreen.cpp \
         src/PlacementScreen.cpp \
+    src/TextureManager.cpp
 
 HEADERS += \
     include/AIPlayer.h \
@@ -36,3 +37,4 @@ HEADERS += \
     include/Ship.h \
     include/SinglePlayerScreen.h \
     include/PlacementScreen.h \
+    include/TextureManager.h

@@ -1,6 +1,7 @@
 #include "Board.h"
 #include <sstream>
 #include "BasicShip.h"
+#include "TextureManager.h"  // <--- DODANE
 
 Board::Board(int size) : size(size) {}
 
@@ -68,7 +69,7 @@ void Board::draw(sf::RenderWindow& window, float tileSize, sf::Vector2f offset, 
             cell.setPosition(offset.x + x * tileSize, offset.y + y * tileSize);
 
             // przezroczysto-szary + czarna ramka
-            cell.setFillColor(sf::Color(128, 128, 128, 100)); // R, G, B, alpha
+            cell.setFillColor(sf::Color(128, 128, 128, 100));
             cell.setOutlineThickness(1);
             cell.setOutlineColor(sf::Color::Black);
 
@@ -83,16 +84,11 @@ void Board::draw(sf::RenderWindow& window, float tileSize, sf::Vector2f offset, 
     }
 
     for (const auto& hit : hitMarkers) {
-        sf::RectangleShape line1(sf::Vector2f(tileSize - 10, 3));
-        line1.setFillColor(sf::Color::Red);
-        line1.setPosition(offset.x + hit.x * tileSize + 5, offset.y + hit.y * tileSize + 5);
-        line1.setRotation(45);
-
-        sf::RectangleShape line2 = line1;
-        line2.setRotation(-45);
-
-        window.draw(line1);
-        window.draw(line2);
+        sf::Sprite boom;
+        boom.setTexture(TextureManager::getBoomTexture());
+        boom.setScale(tileSize / boom.getTexture()->getSize().x, tileSize / boom.getTexture()->getSize().y);
+        boom.setPosition(offset.x + hit.x * tileSize, offset.y + hit.y * tileSize);
+        window.draw(boom);
     }
 
     for (const auto& miss : missedShots) {

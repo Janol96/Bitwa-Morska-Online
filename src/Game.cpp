@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <cmath>
 
 Game::Game(Player& humanPlayer)
     : human(humanPlayer), ai("Komputer"), playerTurn(true)
@@ -77,11 +78,16 @@ void Game::run(sf::RenderWindow& window) {
     sf::Text resultText;
     resultText.setFont(font);
     resultText.setString(playerWon ? "WYGRANA!" : "PRZEGRANA!");
-    resultText.setCharacterSize(48);
-    resultText.setFillColor(sf::Color::White);
-    resultText.setPosition(300, 250);
+    resultText.setCharacterSize(72);
+    resultText.setFillColor(playerWon ? sf::Color::Green : sf::Color::Red);
+
+    sf::FloatRect textRect = resultText.getLocalBounds();
+    resultText.setOrigin(textRect.width / 2, textRect.height / 2);
+    resultText.setPosition(window.getSize().x / 2.f, window.getSize().y / 2.f);
 
     bool endScreen = true;
+
+    sf::Clock clock;
     while (endScreen && window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -91,8 +97,12 @@ void Game::run(sf::RenderWindow& window) {
                 endScreen = false;
         }
 
+        float time = clock.getElapsedTime().asSeconds();
+        float scale = 1.0f + 0.05f * std::sin(time * 2.0f);
+        resultText.setScale(scale, scale);
+
         window.clear();
-        window.draw(backgroundSprite); // tło także na ekranie końcowym
+        window.draw(backgroundSprite);
         window.draw(resultText);
         window.display();
     }

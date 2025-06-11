@@ -1,0 +1,2 @@
+Przekopiować te pliki do
+\build\Desktop_Qt_6_9_1_MinGW_64_bit-Debug

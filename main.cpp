@@ -8,6 +8,8 @@
 #include "Board.h"
 #include "BasicShip.h"
 #include "NetworkManager.h"
+#include "TextureManager.h"
+
 
 const int WINDOW_WIDTH = 1000;
 const int WINDOW_HEIGHT = 500;
@@ -52,6 +54,7 @@ void drawFontError(sf::RenderWindow& window) {
 int main() {
     std::cout << "Current working dir: " << std::filesystem::current_path() << std::endl;
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bitwa Morska Online");
+    TextureManager::loadTextures();
 
     sf::Font font;
     if (!font.loadFromFile("Roboto-Regular.ttf")) {

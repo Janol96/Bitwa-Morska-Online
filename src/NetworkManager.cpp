@@ -84,7 +84,6 @@ bool NetworkManager::receiveBoard(std::vector<std::shared_ptr<Ship>>& shipsOut) 
     return true;
 }
 
-// 🔫 Strzały – pozycja
 bool NetworkManager::sendShot(const sf::Vector2i& pos) {
     sf::Packet packet;
     packet << pos.x << pos.y;
