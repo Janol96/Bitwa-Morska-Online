@@ -73,8 +73,8 @@ Skopiuj zawartość folderu assets/ do katalogu build/[nazwa]
 ## 👨‍💻 Autorzy
 Zespół projektowy – studenci AiR, Politechnika Poznańska:
 
-Jan Handke
-Jakub Jastrząb
+- Jan Handke
+- Jakub Jastrząb
 
 ---
 
