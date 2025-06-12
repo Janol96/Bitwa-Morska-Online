@@ -1,7 +1,7 @@
 #include "Board.h"
 #include <sstream>
 #include "BasicShip.h"
-#include "TextureManager.h"  // <--- DODANE
+#include "TextureManager.h"
 
 Board::Board(int size) : size(size) {}
 
